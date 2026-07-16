@@ -4,7 +4,7 @@ from aiogram.fsm.context import FSMContext
 
 from app.domain.states import FormState
 from app.infrastructure.docx_generator import generate_docx
-from app.infrastructure.google_sheets import GoogleSheetsService
+from app.infrastructure.repositories.google_sheets_tz_repository import GoogleSheetsTZRepository
 
 
 router = Router()
@@ -30,9 +30,12 @@ async def get_email(message: Message, state: FSMContext):
 
     data = await state.get_data()
 
-    sheets = GoogleSheetsService()
-    sheets.append_start_form(
+    repository = GoogleSheetsTZRepository()
+
+    await repository.save_start_form(
         user_id=message.from_user.id,
+        username=message.from_user.username or "",
+        full_name=f"{message.from_user.first_name or ''} {message.from_user.last_name or ''}".strip(),
         name=data.get("name"),
         phone=data.get("phone"),
         email=data.get("email"),
@@ -47,4 +50,3 @@ async def get_email(message: Message, state: FSMContext):
     )
 
     await state.clear()
-

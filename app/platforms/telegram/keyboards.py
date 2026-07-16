@@ -1,8 +1,20 @@
 from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 
-def start_form_keyboard():
+
+def start_keyboard():
     return InlineKeyboardMarkup(
         inline_keyboard=[
-            [InlineKeyboardButton(text="Перейти к заполнению", callback_data="start_form")]
+            [
+                InlineKeyboardButton(
+                    text="📝 Заполнить ТЗ",
+                    callback_data="start_tz"
+                )
+            ],
+            [
+                InlineKeyboardButton(
+                    text="📩 Оставить заявку",
+                    callback_data="start_form"
+                )
+            ]
         ]
     )
